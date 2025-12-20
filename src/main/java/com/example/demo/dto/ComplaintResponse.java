@@ -2,23 +2,22 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.Complaint;
 
+import java.time.LocalDateTime;
+
 public class ComplaintResponse {
     private Long id;
     private String title;
-    private String status;
-    private int priorityScore;
+    private String description;
+    private String category;
+    private String channel;
+    private Integer priorityScore;
+    private LocalDateTime createdAt;
+    private Complaint.Status status;
+    private Complaint.Severity severity;
+    private Complaint.Urgency urgency;
+    private Long customerId;
+    private Long assignedAgentId;
 
-    public ComplaintResponse() {}
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public int getPriorityScore() { return priorityScore; }
-    public void setPriorityScore(int priorityScore) { this.priorityScore = priorityScore; }
+    // Getters and setters
+    // ...
 }

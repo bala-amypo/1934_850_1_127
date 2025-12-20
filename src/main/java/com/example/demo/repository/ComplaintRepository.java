@@ -1,22 +1,17 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Complaint;
-import com.example.demo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
-    // Get all complaints for a specific customer
-    List<Complaint> findByCustomer(User customer);
+    List<Complaint> findByPriorityScore(Integer priorityScore);
 
-    // Get all complaints ordered by priorityScore DESC and createdAt ASC
-    @Query("SELECT c FROM Complaint c ORDER BY c.priorityScore DESC, c.createdAt ASC")
-    List<Complaint> findAllOrderByPriorityScoreDescCreatedAtAsc();
+    List<Complaint> findBySeverity(Complaint.Severity severity);
 
-    // Optional: keep your existing methods
-    List<Complaint> findByStatus(String status);
-    List<Complaint> findByPriority(String priority);
+    List<Complaint> findByUrgency(Complaint.Urgency urgency);
 }

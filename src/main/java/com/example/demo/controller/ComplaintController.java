@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.ComplaintRequest;
 import com.example.demo.dto.ComplaintResponse;
 import com.example.demo.entity.Complaint;
-import com.example.demo.entity.User;
 import com.example.demo.service.ComplaintService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/complaints")
+@RequestMapping("/api/complaints")
 public class ComplaintController {
 
     private final ComplaintService complaintService;
@@ -20,31 +19,52 @@ public class ComplaintController {
         this.complaintService = complaintService;
     }
 
-    @PostMapping("/submit")
-    public ComplaintResponse submitComplaint(@RequestBody ComplaintRequest request) {
-        // Dummy user for now
-        User customer = new User();
-        customer.setEmail("dummy@example.com");
+    @PostMapping
+    public ComplaintResponse createComplaint(@RequestBody ComplaintRequest request) {
+        Complaint complaint = new Complaint();
+        complaint.setTitle(request.getTitle());
+        complaint.setDescription(request.getDescription());
+        complaint.setCategory(request.getCategory());
+        complaint.setChannel(request.getChannel());
+        complaint.setPriorityScore(request.getPriorityScore());
+        complaint.setStatus(request.getStatus());
+        complaint.setSeverity(request.getSeverity());
+        complaint.setUrgency(request.getUrgency());
+        // TODO: set customer and assignedAgent from IDs
 
-        Complaint complaint = complaintService.submitComplaint(request, customer);
+        Complaint saved = complaintService.saveComplaint(complaint);
 
         ComplaintResponse response = new ComplaintResponse();
-        response.setId(complaint.getId());
-        response.setTitle(complaint.getTitle());
-        response.setStatus(complaint.getStatus().name());
-        response.setPriorityScore(complaint.getPriorityScore());
+        response.setId(saved.getId());
+        response.setTitle(saved.getTitle());
+        response.setDescription(saved.getDescription());
+        response.setCategory(saved.getCategory());
+        response.setChannel(saved.getChannel());
+        response.setPriorityScore(saved.getPriorityScore());
+        response.setCreatedAt(saved.getCreatedAt());
+        response.setStatus(saved.getStatus());
+        response.setSeverity(saved.getSeverity());
+        response.setUrgency(saved.getUrgency());
+        // TODO: set customerId and assignedAgentId
+
         return response;
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<ComplaintResponse> getAllComplaints() {
-        List<Complaint> complaints = complaintService.getPrioritizedComplaints();
-        return complaints.stream().map(c -> {
+        return complaintService.getAllComplaints().stream().map(c -> {
             ComplaintResponse r = new ComplaintResponse();
             r.setId(c.getId());
             r.setTitle(c.getTitle());
-            r.setStatus(c.getStatus().name());
+            r.setDescription(c.getDescription());
+            r.setCategory(c.getCategory());
+            r.setChannel(c.getChannel());
             r.setPriorityScore(c.getPriorityScore());
+            r.setCreatedAt(c.getCreatedAt());
+            r.setStatus(c.getStatus());
+            r.setSeverity(c.getSeverity());
+            r.setUrgency(c.getUrgency());
+            // TODO: set customerId and assignedAgentId
             return r;
         }).collect(Collectors.toList());
     }
