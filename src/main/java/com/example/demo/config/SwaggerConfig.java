@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SwaggerConfig {
 
-    // Swagger/OpenAPI
+    // Swagger/OpenAPI configuration
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
@@ -26,9 +26,12 @@ public class SwaggerConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")  // all endpoints
-                        .allowedOrigins("*") // allow all origins for testing
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+                registry.addMapping("/**") // apply to all endpoints
+                        // Replace below with the exact URL of your front-end or Swagger UI
+                        .allowedOrigins("https://9612.pro604cr.amypo.ai") 
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // allows cookies/auth if needed
             }
         };
     }
