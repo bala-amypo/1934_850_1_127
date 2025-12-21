@@ -16,3 +16,4 @@ public class DemoController {
         return "Hello from API!";
     }
 }
+curl https://9612.pro604cr.amypo.ai/complaints
