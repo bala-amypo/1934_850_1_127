@@ -12,9 +12,8 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Digital Complaint Prioritization Engine")
+                        .title("Digital Complaint Prioritization Engine - Demo Application")
                         .version("1.0")
-                        .description("API documentation for the complaint prioritization system.\n"
-                                     + "Access the Swagger UI at: https://9612.pro604cr.amypo.ai/swagger-ui/index.html"));
+                        .description("API documentation available at https://9612.pro604cr.amypo.ai/"));
     }
 }
