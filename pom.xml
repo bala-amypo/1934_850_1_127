@@ -14,30 +14,33 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>hari</artifactId>
+    <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>hari</name>
-    <description>Digital Complaint Prioritization Engine</description>
+    <name>demo</name>
+    <description>Digital Complaint Prioritization Engine - Demo Application</description>
 
     <properties>
         <java.version>17</java.version>
-        <spring-boot.main-class>com.example.hari.HariApplication</spring-boot.main-class>
+        <spring-boot.main-class>com.example.demo.DemoApplication</spring-boot.main-class>
     </properties>
 
     <dependencies>
 
+        <!-- Spring Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- MySQL Connector -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -45,12 +48,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Swagger / OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.5.0</version>
         </dependency>
 
+        <!-- Test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -65,15 +70,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
-                    <mainClass>com.example.hari.HariApplication</mainClass>
+                    <mainClass>com.example.demo.DemoApplication</mainClass>
                 </configuration>
             </plugin>
 

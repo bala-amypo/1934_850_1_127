@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI() {
+    public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
                         .title("Digital Complaint Prioritization Engine")
-                        .version("1.0"));
+                        .version("1.0")
+                        .description("API documentation for the complaint prioritization system.\n"
+                                     + "Access the Swagger UI at: https://9612.pro604cr.amypo.ai/swagger-ui/index.html"));
     }
 }
