@@ -1,38 +1,38 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "priority_rule")
 public class PriorityRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type; 
-    private String level; 
-    private Double weight;
-    private String description; 
-    private boolean active = true; 
+    private String ruleName;
+    private String description;
+    private Integer weight;
+    private boolean active = true;
 
-    public PriorityRule() {}
+    @ManyToMany(mappedBy = "priorityRules")
+    private Set<Complaint> complaints = new HashSet<>();
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; } // FIXED
-    
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-    
-    public String getLevel() { return level; }
-    public void setLevel(String level) { this.level = level; }
-    
-    public Double getWeight() { return weight; }
-    public void setWeight(Double weight) { this.weight = weight; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getRuleName() { return ruleName; }
+    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    public Integer getWeight() { return weight; }
+    public void setWeight(Integer weight) { this.weight = weight; }
+
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public Set<Complaint> getComplaints() { return complaints; }
 }

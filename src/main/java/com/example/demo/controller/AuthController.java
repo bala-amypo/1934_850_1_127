@@ -13,32 +13,47 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+
+    public AuthController(UserService userService,
+                          JwtUtil jwtUtil,
+                          AuthenticationManager authenticationManager) {
         this.userService = userService;
-        this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
-        // Business rule: delegate to service [cite: 92]
-        User registeredUser = userService.registerCustomer(user.getFullName(), user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<User> register(@RequestParam String name,
+                                         @RequestParam String email,
+                                         @RequestParam String password) {
+
+        User user = userService.registerCustomer(name, email, password);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
-        // Validate credentials and generate JWT [cite: 93]
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(), request.getPassword()
+                )
         );
-        User user = userService.findByEmail(authRequest.getEmail());
-        String token = jwtUtil.generateToken(user.getEmail());
-        
-        return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getEmail(), user.getRole()));
+
+        User user = userService.findByEmail(request.getEmail());
+        String token = jwtUtil.generateToken(user);
+
+        AuthResponse response = new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole().name()
+        );
+
+        return ResponseEntity.ok(response);
     }
 }

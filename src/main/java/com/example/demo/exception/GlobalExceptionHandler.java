@@ -2,42 +2,52 @@ package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleResourceNotFound(ResourceNotFoundException ex) {
-        return buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, String>> handleNotFound(
+            ResourceNotFoundException ex) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<?> handleBadRequest(BadRequestException ex) {
-        return buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String, String>> handleBadRequest(
+            BadRequestException ex) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<?> handleUnauthorized(UnauthorizedException ex) {
-        return buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Map<String, String>> handleUnauthorized(
+            UnauthorizedException ex) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
-        if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains("email")) {
-            return buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        return buildResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneric(
+            Exception ex) {
 
-    private ResponseEntity<Object> buildResponse(String message, HttpStatus status) {
-        Map<String, Object> body = new HashMap<>();
-        // FIX: Use .put() for Maps, not .add()
-        body.put("message", message);
-        body.put("success", false);
-        return new ResponseEntity<>(body, status);
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
