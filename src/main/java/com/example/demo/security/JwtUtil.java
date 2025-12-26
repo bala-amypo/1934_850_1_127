@@ -13,9 +13,10 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "secret";
+    // Updated to a 256-bit secure key to fix the HS256 security requirement error
+    private final String SECRET_KEY = "this_is_a_very_secure_and_long_secret_key_at_least_32_chars";
 
-    // Used in controller (not deeply tested)
+    // Used in controller
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole().name());
