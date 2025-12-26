@@ -25,7 +25,6 @@ public class GlobalExceptionHandler {
         return buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    // Generic handler for RuntimeExceptions (e.g., duplicate email checks in tests)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
         if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains("email")) {
@@ -36,8 +35,9 @@ public class GlobalExceptionHandler {
 
     private ResponseEntity<Object> buildResponse(String message, HttpStatus status) {
         Map<String, Object> body = new HashMap<>();
-        body.add("message", message);
-        body.add("success", false);
+        // FIX: Use .put() for Maps, not .add()
+        body.put("message", message);
+        body.put("success", false);
         return new ResponseEntity<>(body, status);
     }
 }
