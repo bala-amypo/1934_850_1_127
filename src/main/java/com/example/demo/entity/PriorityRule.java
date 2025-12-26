@@ -10,9 +10,10 @@ public class PriorityRule {
     private String type; // e.g., SEVERITY or URGENCY
     private String level; // e.g., CRITICAL, HIGH, LOW
     private Double weight;
-    
-    // ADDED: Required by test cases
     private String description; 
+    
+    // ADDED: Must match PriorityRuleRepository.findByActiveTrue()
+    private boolean active = true; 
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -27,7 +28,10 @@ public class PriorityRule {
     public Double getWeight() { return weight; }
     public void setWeight(Double weight) { this.weight = weight; }
 
-    // ADDED: Missing getter/setter for description
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    // ADDED: Getter and Setter for active field
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
