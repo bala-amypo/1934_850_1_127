@@ -3,45 +3,39 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
 public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    [cite_start]private Long id; [cite: 382]
-    [cite_start]private String title; [cite: 382]
-    [cite_start]private String description; [cite: 382]
-    [cite_start]private String category; [cite: 382]
-    [cite_start]private String channel; [cite: 382]
-    [cite_start]private Integer priorityScore; [cite: 382]
-    [cite_start]private LocalDateTime createdAt; [cite: 382]
+    private Long id;
+
+    private String title;
+    private String description;
+    private String category;
+    private String channel;
+    private Integer priorityScore;
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
-    [cite_start]private Status status = Status.NEW; [cite: 382, 384]
+    private Status status = Status.NEW;
 
     @Enumerated(EnumType.STRING)
-    [cite_start]private Severity severity; [cite: 382]
+    private Severity severity;
 
     @Enumerated(EnumType.STRING)
-    [cite_start]private Urgency urgency; [cite: 382]
+    private Urgency urgency;
 
     @ManyToOne
-    [cite_start]private User customer; [cite: 382, 311]
-
-    @ManyToOne
-    [cite_start]private User assignedAgent; [cite: 382, 323]
-
-    @ManyToMany
-    @JoinTable(name = "complaint_rules")
-    [cite_start]private Set<PriorityRule> priorityRules = new HashSet<>(); [cite: 382, 312, 329]
+    private User customer;
 
     @PrePersist
-    protected void onCreate() { createdAt = LocalDateTime.now(); [cite_start]} [cite: 385]
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
-    [cite_start]public enum Status { NEW, OPEN, IN_PROGRESS, RESOLVED } [cite: 382, 308]
-    [cite_start]public enum Severity { LOW, MEDIUM, HIGH, CRITICAL } [cite: 382, 309]
-    [cite_start]public enum Urgency { LOW, MEDIUM, HIGH, IMMEDIATE } [cite: 382, 310]
+    public enum Status { NEW, OPEN, IN_PROGRESS, RESOLVED }
+    public enum Severity { LOW, MEDIUM, HIGH, CRITICAL }
+    public enum Urgency { LOW, MEDIUM, HIGH, IMMEDIATE }
 }

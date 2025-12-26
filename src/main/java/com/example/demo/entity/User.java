@@ -1,25 +1,27 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
-@Table(name = "users")
 @Data
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    [cite_start]private Long id; [cite: 376]
+    private Long id;
 
-    [cite_start]private String fullName; [cite: 376]
+    private String fullName;
 
     @Column(unique = true, nullable = false)
-    [cite_start]private String email; [cite: 376, 378]
+    private String email;
 
-    [cite_start]private String password; [cite: 376]
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    [cite_start]private Role role; [cite: 376]
+    private Role role;
 
-    [cite_start]public enum Role { CUSTOMER, AGENT, ADMIN } [cite: 376]
+    public enum Role {
+        CUSTOMER, AGENT, ADMIN
+    }
 }
