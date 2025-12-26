@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,7 +17,7 @@ public class Complaint {
     private String description;
     private String category;
     private String channel;
-    private Integer priorityScore;
+    private Integer priorityScore = 0;
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
@@ -30,9 +32,16 @@ public class Complaint {
     @ManyToOne
     private User customer;
 
+    @ManyToOne
+    private User assignedAgent;
+
+    // Must be initialized for testPriorityRulesInitiallyEmpty
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<PriorityRule> priorityRules = new HashSet<>();
+
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public enum Status { NEW, OPEN, IN_PROGRESS, RESOLVED }
