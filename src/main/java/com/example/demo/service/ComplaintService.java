@@ -4,14 +4,17 @@ import com.example.demo.dto.ComplaintRequest;
 import com.example.demo.entity.Complaint;
 import com.example.demo.entity.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface ComplaintService {
-    // Maps DTO to Entity, triggers scoring, and saves to DB
     Complaint submitComplaint(ComplaintRequest request, User customer);
     
-    // Retrieves history for a specific logged-in customer
     List<Complaint> getComplaintsForUser(User customer);
     
-    // Retrieves all complaints sorted by Priority Score (HQL requirement)
     List<Complaint> getPrioritizedComplaints();
+
+    // MUST ADD THESE TWO TO FIX THE COMPILATION ERROR
+    Optional<Complaint> getComplaintById(Long id);
+
+    Complaint updateComplaintStatus(Long id, Complaint.Status status);
 }
