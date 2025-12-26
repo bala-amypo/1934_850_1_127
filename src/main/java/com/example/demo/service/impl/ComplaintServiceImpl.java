@@ -7,6 +7,8 @@ import com.example.demo.repository.ComplaintRepository;
 import com.example.demo.service.ComplaintService;
 import com.example.demo.service.PriorityRuleService;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,10 +18,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final UserService userService;
     private final PriorityRuleService priorityRuleService;
 
-    // Fixed constructor to match your specific test suite requirements
+    // Use @Autowired on the constructor and @Nullable for the dummy object
+    @Autowired
     public ComplaintServiceImpl(ComplaintRepository complaintRepository, 
                                 UserService userService, 
-                                Object dummy, 
+                                @Nullable Object dummy, 
                                 PriorityRuleService priorityRuleService) {
         this.complaintRepository = complaintRepository;
         this.userService = userService;
@@ -37,9 +40,8 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setUrgency(request.getUrgency());
         complaint.setCustomer(customer);
 
-        // 1. Compute score
+        // Compute and set priority score
         int score = priorityRuleService.computePriorityScore(complaint);
-        // 2. Set score (Entity handles Integer, this handles int)
         complaint.setPriorityScore(score);
 
         return complaintRepository.save(complaint);
