@@ -1,98 +1,25 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.*;
 
 @Entity
-@Table(
-    name = "users",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-    }
-)
+@Table(name = "users")
+@Data
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    [cite_start]private Long id; [cite: 376]
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    [cite_start]private String fullName; [cite: 376]
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(unique = true, nullable = false)
+    [cite_start]private String email; [cite: 376, 378]
 
-    @Column(nullable = false)
-    private String password;
+    [cite_start]private String password; [cite: 376]
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    [cite_start]private Role role; [cite: 376]
 
-    /* =======================
-       RELATIONSHIPS
-       ======================= */
-
-    @OneToMany(mappedBy = "customer")
-    private List<Complaint> complaints = new ArrayList<>();
-
-    @OneToMany(mappedBy = "assignedAgent")
-    private List<Complaint> assignedComplaints = new ArrayList<>();
-
-    /* =======================
-       ENUM
-       ======================= */
-
-    public enum Role {
-        CUSTOMER, AGENT, ADMIN
-    }
-
-    /* =======================
-       GETTERS & SETTERS
-       ======================= */
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public List<Complaint> getComplaints() {
-        return complaints;
-    }
-
-    public List<Complaint> getAssignedComplaints() {
-        return assignedComplaints;
-    }
+    [cite_start]public enum Role { CUSTOMER, AGENT, ADMIN } [cite: 376]
 }
