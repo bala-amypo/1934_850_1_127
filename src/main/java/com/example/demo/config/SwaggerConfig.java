@@ -5,16 +5,28 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        // Define the server URL for your specific preview environment
+        Server previewServer = new Server();
+        previewServer.setUrl("https://9235.408procr.amypo.ai/");
+        previewServer.setDescription("Preview Environment");
+
         return new OpenAPI()
-                .info(new Info().title("Digital Complaint Prioritization Engine API").version("1.0"))
+                .info(new Info()
+                        .title("Digital Complaint Prioritization Engine API")
+                        .version("1.0")
+                        .description("API for managing and prioritizing digital customer complaints"))
+                .servers(List.of(previewServer)) // Ensures the "Try it out" feature uses the correct base URL
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth", new SecurityScheme()
