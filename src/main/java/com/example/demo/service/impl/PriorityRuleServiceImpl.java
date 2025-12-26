@@ -4,44 +4,35 @@ import com.example.demo.entity.Complaint;
 import com.example.demo.entity.PriorityRule;
 import com.example.demo.repository.PriorityRuleRepository;
 import com.example.demo.service.PriorityRuleService;
-
-import java.util.List;
-
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class PriorityRuleServiceImpl implements PriorityRuleService {
+    private final PriorityRuleRepository priorityRuleRepository;
 
-    private final PriorityRuleRepository repo;
-
-    public PriorityRuleServiceImpl(PriorityRuleRepository repo) {
-        this.repo = repo;
+    public PriorityRuleServiceImpl(PriorityRuleRepository priorityRuleRepository) {
+        this.priorityRuleRepository = priorityRuleRepository;
     }
 
     @Override
     public int computePriorityScore(Complaint complaint) {
         int score = 0;
 
-        if (complaint.getSeverity() != null) {
-            switch (complaint.getSeverity()) {
-                case CRITICAL -> score += 40;
-                case HIGH -> score += 30;
-                case MEDIUM -> score += 20;
-                case LOW -> score += 10;
-            }
-        }
-
-        if (complaint.getUrgency() != null) {
-            switch (complaint.getUrgency()) {
-                case IMMEDIATE -> score += 40;
-                case HIGH -> score += 30;
-                case MEDIUM -> score += 20;
-                case LOW -> score += 10;
-            }
-        }
-
-        for (PriorityRule rule : repo.findByActiveTrue()) {
+        // 1. Sum weights of all active rules
+        List<PriorityRule> activeRules = priorityRuleRepository.findByActiveTrue();
+        for (PriorityRule rule : activeRules) {
             score += rule.getWeight();
+        }
+
+        // 2. Add points for Severity (Low=10, Med=20, High=30, Critical=40)
+        if (complaint.getSeverity() != null) {
+            score += (complaint.getSeverity().ordinal() + 1) * 10;
+        }
+
+        // 3. Add points for Urgency (Low=5, Med=10, High=15, Immediate=20)
+        if (complaint.getUrgency() != null) {
+            score += (complaint.getUrgency().ordinal() + 1) * 5;
         }
 
         return score;
@@ -49,6 +40,6 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
 
     @Override
     public List<PriorityRule> getActiveRules() {
-        return repo.findByActiveTrue();
+        return priorityRuleRepository.findByActiveTrue();
     }
 }
