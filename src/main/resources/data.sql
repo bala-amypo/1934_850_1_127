@@ -1,17 +1,17 @@
 -- Severity Weights
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('SEVERITY', 'CRITICAL', 5.0, 'Critical');
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('SEVERITY', 'HIGH', 3.0, 'High');
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('SEVERITY', 'MEDIUM', 2.0, 'Medium');
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('SEVERITY', 'LOW', 1.0, 'Low');
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('SEVERITY', 'CRITICAL', 5.0, 'Critical', true);
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('SEVERITY', 'HIGH', 3.0, 'High', true);
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('SEVERITY', 'MEDIUM', 2.0, 'Medium', true);
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('SEVERITY', 'LOW', 1.0, 'Low', true);
 
 -- Urgency Weights
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('URGENCY', 'IMMEDIATE', 5.0, 'Immediate');
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('URGENCY', 'HIGH', 3.0, 'High');
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('URGENCY', 'MEDIUM', 2.0, 'Medium');
-INSERT INTO priority_rule (type, level, weight, description) VALUES ('URGENCY', 'LOW', 1.0, 'Low');
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('URGENCY', 'IMMEDIATE', 5.0, 'Immediate', true);
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('URGENCY', 'HIGH', 3.0, 'High', true);
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('URGENCY', 'MEDIUM', 2.0, 'Medium', true);
+INSERT IGNORE INTO priority_rule (type, level, weight, description, active) VALUES ('URGENCY', 'LOW', 1.0, 'Low', true);
 
--- Category Weights (for ComplaintPriorityRules table)
-INSERT INTO complaint_priority_rules (category, base_weight) VALUES ('Security', 2.0);
-INSERT INTO complaint_priority_rules (category, base_weight) VALUES ('Technical', 1.5);
-INSERT INTO complaint_priority_rules (category, base_weight) VALUES ('Billing', 1.2);
-INSERT INTO complaint_priority_rules (category, base_weight) VALUES ('General', 1.0);
+-- Category Weights
+INSERT IGNORE INTO complaint_priority_rules (category, base_weight) VALUES ('Security', 2.0);
+INSERT IGNORE INTO complaint_priority_rules (category, base_weight) VALUES ('Technical', 1.5);
+INSERT IGNORE INTO complaint_priority_rules (category, base_weight) VALUES ('Billing', 1.2);
+INSERT IGNORE INTO complaint_priority_rules (category, base_weight) VALUES ('General', 1.0);
