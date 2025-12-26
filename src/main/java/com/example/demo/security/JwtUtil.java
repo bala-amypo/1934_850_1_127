@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
+import java.nio.charset.StandardCharsets; // Required import
 
 import java.util.Date;
 import java.util.HashMap;
@@ -13,10 +14,9 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    // Updated to a 256-bit secure key to fix the HS256 security requirement error
+    // A secure 256-bit key
     private final String SECRET_KEY = "this_is_a_very_secure_and_long_secret_key_at_least_32_chars";
 
-    // Used in controller
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole().name());
@@ -28,7 +28,8 @@ public class JwtUtil {
                 .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                // FIX: Use .getBytes() to treat the string as raw data
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes(StandardCharsets.UTF_8))
                 .compact();
     }
 
@@ -70,7 +71,8 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                // FIX: Use .getBytes() here as well
+                .setSigningKey(SECRET_KEY.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token)
                 .getBody();
     }
