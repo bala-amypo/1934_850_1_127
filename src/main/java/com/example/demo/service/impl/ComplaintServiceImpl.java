@@ -7,8 +7,6 @@ import com.example.demo.repository.ComplaintRepository;
 import com.example.demo.service.ComplaintService;
 import com.example.demo.service.PriorityRuleService;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,11 +16,9 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final UserService userService;
     private final PriorityRuleService priorityRuleService;
 
-    // Use @Autowired on the constructor and @Nullable for the dummy object
-    @Autowired
+    // Standard constructor for Spring Boot to work correctly
     public ComplaintServiceImpl(ComplaintRepository complaintRepository, 
                                 UserService userService, 
-                                @Nullable Object dummy, 
                                 PriorityRuleService priorityRuleService) {
         this.complaintRepository = complaintRepository;
         this.userService = userService;
