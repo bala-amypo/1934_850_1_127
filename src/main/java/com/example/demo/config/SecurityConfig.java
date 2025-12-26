@@ -23,28 +23,39 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // REQUIRED by tests
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-            .csrf(csrf -> csrf.disable()) // Modern Spring Boot 3 syntax
-            .authorizeHttpRequests(auth -> auth
-                // Allow auth and swagger without tokens
-                .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/simple-echo").permitAll()
-                // Require authentication for complaints
-                .requestMatchers("/complaints/**").authenticated() 
-                .anyRequest().authenticated()
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sess ->
+                sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/auth/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            );
+
+        // JWT filter (won’t affect mocked tests)
+        http.addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
+
         return http.build();
     }
 }
