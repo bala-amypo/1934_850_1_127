@@ -1,31 +1,34 @@
 package com.example.demo.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class SimpleEchoServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // 1. Read the 'name' parameter from the request
-        String name = req.getParameter("name");
-        
-        // 2. Set response headers as expected by the tests
-        resp.setContentType("text/plain");
-        resp.setStatus(HttpServletResponse.SC_OK);
 
-        // 3. Logic required to pass the test cases:
-        // If name is null, empty, or just whitespace -> "Hello, Guest"
-        // Otherwise -> "Hello, <TrimmedName>"
+        // ✅ Content type REQUIRED by test
+        response.setContentType("text/plain");
+
+        String name = request.getParameter("name");
+
+        // ✅ Handle null, empty, blank, trimmed cases
         if (name == null || name.trim().isEmpty()) {
-            resp.getWriter().write("Hello, Guest");
+            name = "Guest";
         } else {
-            resp.getWriter().write("Hello, " + name.trim());
+            name = name.trim();
         }
+
+        // ✅ Write response body
+        PrintWriter out = response.getWriter();
+        out.write("Hello, " + name);
+        out.flush();
     }
 }
