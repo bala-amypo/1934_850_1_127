@@ -1,185 +1,47 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "complaint")
+@Data
 public class Complaint {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String title;
-
-    @Column(length = 1000)
-    private String description;
-
-    private String category;
-    private String channel;
-
-    @Column(name = "priority_score")
-    private Integer priorityScore;
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    [cite_start]private Long id; [cite: 382]
+    [cite_start]private String title; [cite: 382]
+    [cite_start]private String description; [cite: 382]
+    [cite_start]private String category; [cite: 382]
+    [cite_start]private String channel; [cite: 382]
+    [cite_start]private Integer priorityScore; [cite: 382]
+    [cite_start]private LocalDateTime createdAt; [cite: 382]
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    [cite_start]private Status status = Status.NEW; [cite: 382, 384]
 
     @Enumerated(EnumType.STRING)
-    private Severity severity;
+    [cite_start]private Severity severity; [cite: 382]
 
     @Enumerated(EnumType.STRING)
-    private Urgency urgency;
+    [cite_start]private Urgency urgency; [cite: 382]
 
-    /* =======================
-       USER RELATIONSHIPS
-       ======================= */
+    @ManyToOne
+    [cite_start]private User customer; [cite: 382, 311]
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private User customer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_agent_id")
-    private User assignedAgent;
-
-    /* =======================
-       PRIORITY RULE MAPPING
-       ======================= */
+    @ManyToOne
+    [cite_start]private User assignedAgent; [cite: 382, 323]
 
     @ManyToMany
-    @JoinTable(
-        name = "complaint_priority_rules",
-        joinColumns = @JoinColumn(name = "complaints_id"),
-        inverseJoinColumns = @JoinColumn(name = "priority_rules_id")
-    )
-    private List<PriorityRule> priorityRules = new ArrayList<>();
-
-    /* =======================
-       AUDIT
-       ======================= */
+    @JoinTable(name = "complaint_rules")
+    [cite_start]private Set<PriorityRule> priorityRules = new HashSet<>(); [cite: 382, 312, 329]
 
     @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.status = Status.NEW;
-    }
+    protected void onCreate() { createdAt = LocalDateTime.now(); [cite_start]} [cite: 385]
 
-    /* =======================
-       ENUMS
-       ======================= */
-
-    public enum Status {
-        NEW, OPEN, IN_PROGRESS, RESOLVED
-    }
-
-    public enum Severity {
-        LOW, MEDIUM, HIGH, CRITICAL
-    }
-
-    public enum Urgency {
-        LOW, MEDIUM, HIGH, IMMEDIATE
-    }
-
-    /* =======================
-       GETTERS & SETTERS
-       ======================= */
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public Integer getPriorityScore() {
-        return priorityScore;
-    }
-
-    public void setPriorityScore(Integer priorityScore) {
-        this.priorityScore = priorityScore;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Severity getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(Severity severity) {
-        this.severity = severity;
-    }
-
-    public Urgency getUrgency() {
-        return urgency;
-    }
-
-    public void setUrgency(Urgency urgency) {
-        this.urgency = urgency;
-    }
-
-    public User getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(User customer) {
-        this.customer = customer;
-    }
-
-    public User getAssignedAgent() {
-        return assignedAgent;
-    }
-
-    public void setAssignedAgent(User assignedAgent) {
-        this.assignedAgent = assignedAgent;
-    }
-
-    public List<PriorityRule> getPriorityRules() {
-        return priorityRules;
-    }
-
-    public void setPriorityRules(List<PriorityRule> priorityRules) {
-        this.priorityRules = priorityRules;
-    }
+    [cite_start]public enum Status { NEW, OPEN, IN_PROGRESS, RESOLVED } [cite: 382, 308]
+    [cite_start]public enum Severity { LOW, MEDIUM, HIGH, CRITICAL } [cite: 382, 309]
+    [cite_start]public enum Urgency { LOW, MEDIUM, HIGH, IMMEDIATE } [cite: 382, 310]
 }
