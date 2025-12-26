@@ -10,6 +10,9 @@ public class ComplaintPriorityRules {
     private Long id;
 
     private String category;
+
+    // ADDED: Explicit column mapping to ensure data.sql matches
+    @Column(name = "base_weight")
     private Double baseWeight;
 
     // Getters and Setters
