@@ -33,18 +33,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeHttpRequests()
-            // Publicly accessible endpoints
-            .requestMatchers("/auth/**", "/simple-echo", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            // All other requests require authentication
-            .anyRequest().authenticated()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        // Add our JWT filter before the standard UsernamePasswordAuthenticationFilter
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+            .csrf(csrf -> csrf.disable()) // Modern Spring Boot 3 syntax
+            .authorizeHttpRequests(auth -> auth
+                // Allow auth and swagger without tokens
+                .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/simple-echo").permitAll()
+                // Require authentication for complaints
+                .requestMatchers("/complaints/**").authenticated() 
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
     }
