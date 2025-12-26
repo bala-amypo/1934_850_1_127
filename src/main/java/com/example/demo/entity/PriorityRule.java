@@ -1,28 +1,33 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class PriorityRule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String ruleName;
-    private int weight;
-    private boolean active = true;
+    private String type; // e.g., SEVERITY or URGENCY
+    private String level; // e.g., CRITICAL, HIGH, LOW
+    private Double weight;
+    
+    // ADDED: Required by test cases
+    private String description; 
 
-    @ManyToMany(mappedBy = "priorityRules")
-    private Set<Complaint> complaints = new HashSet<>();
-
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-    public int getWeight() { return weight; }
-    public void setWeight(int weight) { this.weight = weight; }
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
-    public Set<Complaint> getComplaints() { return complaints; }
+    
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    
+    public String getLevel() { return level; }
+    public void setLevel(String level) { this.level = level; }
+    
+    public Double getWeight() { return weight; }
+    public void setWeight(Double weight) { this.weight = weight; }
+
+    // ADDED: Missing getter/setter for description
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }
